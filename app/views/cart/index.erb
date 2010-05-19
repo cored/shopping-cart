@@ -1,0 +1,23 @@
+<%= stylesheet_link_tag 'cart' %>
+<h1>padrino Apple store demo</h1>
+ 
+<div id="shopping_cart">
+ 
+  <h2>Products:</h2>
+ 
+  <div id="product_list">
+    <% @products.each_with_index do |product, index| %>
+      <%= image_tag "product#{index}.png", :class => 'products', :id => "product_#{index}" %>
+    <% end %>
+  </div>
+ 
+  <h2>Cart:</h2>
+ 
+  <div id="cart" class="cart">
+    <div id="items">
+      <% partial 'cart/cart', :collection => @products %>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+  
+</div>
