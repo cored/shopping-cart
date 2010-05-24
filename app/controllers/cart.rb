@@ -24,4 +24,8 @@ ShoppingCart.controllers :cart do
   	render 'cart/index'
   end
 
+  get :add, :map => '/add' do
+
+  end
+
 end

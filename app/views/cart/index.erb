@@ -4,6 +4,9 @@
 <div id="shopping_cart">
 
     <h2>Products:</h2>
+    <div id="data-url">
+        <%= url(:cart, :add, :format => :js) %>
+    </div>
 
     <div id="product_list">
         <% @products.each_with_index do |product, index| %>
