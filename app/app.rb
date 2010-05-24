@@ -8,7 +8,7 @@ class ShoppingCart < Padrino::Application
     # set :reload, false          # Reload application files (default in development)
     # set :default_builder, "foo" # Set a custom form builder (default 'StandardFormBuilder')
     # set :locale_path, "bar"     # Set path for I18n translations (default your_app/locales)
-    # enable  :sessions           # Disabled by default
+    enable  :sessions           # Disabled by default
     # disable :flash              # Disables rack-flash (enabled by default if sessions)
     # disable :padrino_helpers    # Disables padrino markup helpers (enabled by default if present)
     # disable :padrino_mailer     # Disables padrino mailer (enabled by default if present)
