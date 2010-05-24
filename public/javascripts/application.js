@@ -6,6 +6,6 @@ for (var i=0; i<4; i++) {
 Droppables.add('cart', {
     accept: 'products',
     onDrop: function(element) {
-        $('items').update(new Ajax.Request($('shopping_cart').readAttribute('data-url'), { method: 'get', parameters: { id: element.id } }))
+        new Ajax.Updater('items', $('shopping_cart').readAttribute('data-url'), { method: 'get', parameters: { id: element.id }});
     }
 });
