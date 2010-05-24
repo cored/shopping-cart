@@ -1,13 +1,9 @@
 <%= stylesheet_link_tag 'cart' %>
 <h1>padrino Apple store demo</h1>
 
-<div id="shopping_cart">
+<div id="shopping_cart" data-url="<%= url(:cart, :add, :format => :js) %>">
 
     <h2>Products:</h2>
-    <div id="data-url">
-        <%= url(:cart, :add, :format => :js) %>
-    </div>
-
     <div id="product_list">
         <% @products.each_with_index do |product, index| %>
             <%= image_tag "product#{index}.png", :class => 'products', :id => "product_#{index}" %>
