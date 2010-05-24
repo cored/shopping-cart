@@ -153,16 +153,13 @@ Edit the shopping-cart/app/controllers/cart.rb to add an add action:
 
 <pre><code>
    get :add, :map => '/add' do
-        product_id = params[:id][-1].to_i
-        cart = session[:cart] || []
-        unless cart[product_id]
-            cart[product_id] = 1
-        else
-            cart[product_id] += 1
-        end
-        session[:cart] = cart
-        @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
-    end
+    product_id = params[:id][-1].to_i
+    cart = session[:cart] || {}
+    cart[product_id] ? cart[product_id] += 1 : cart[product_id] = 1
+    session[:cart] = cart
+    @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
+    render 'cart/add'
+   end
 </code></pre>
 
 This action looks for the parameter sent by the JavaScript (the id of the dragged item) and adds it to the cart.
@@ -177,3 +174,18 @@ The result of the add action will be the add.erb view. It is a simple inclusion 
 
 Try it on: you can now add items to the cart by dragging them
 
+h1. Focus on Usability
+
+You could stop now, but this shopping cart has a big default: while the cart is updated, the interface doesn't change and the user might be disoriented. This is a general issue of asynchronous requests: an indicator zone has to be added to show that the request is being processed. In addition, nothing tells the user when the dragged item is considered accepted by the cart, so the hover style of the cart div also has to be defined.
+
+To do that, edit the index.erb template and write in:
+
+<pre><code>
+<div style="height:20px">
+  <p id="indicator" style="display:none">
+    <%= image_tag 'indicator.gif' %> updating cart...
+  </p>
+</div>
+</code></pre>
+
+Save the 'indicator.gif' image file to your shopping-cart/public/images/ directory. You can find this file in the github repo.

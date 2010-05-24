@@ -1,6 +1,12 @@
 <%= stylesheet_link_tag 'cart' %>
 <h1>padrino Apple store demo</h1>
 
+<div style="height:20px">
+    <p id="indicator" style="display:none">
+        <%= image_tag 'indicator.gif' %> updating cart...
+    </p>
+</div>
+
 <div id="shopping_cart" data-url="<%= url(:cart, :add, :format => :js) %>">
 
     <h2>Products:</h2>

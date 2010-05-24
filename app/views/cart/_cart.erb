@@ -1,15 +1,15 @@
-<% session[:cart].each_with_index do |product, quantity| %>
+<% session[:cart].each_pair do |product,quantity| %>
     <div>
         <% 1.upto(quantity) do |i| %>
-            <%= image_tag "product_#{quantity}.png", :class => 'cart-items', 
+            <%= image_tag "product#{product}.png", :class => 'cart-items', 
                 :id => "item_#{quantity}_#{i}",
                 :style => 'position:relative' 
             %>
         <% end %>
-        <%= "#{quantity} #{@products[quantity]} "%>
+        (<%= "#{quantity} #{@products[product]} "%>)
     </div>
 <% end %>
 
-<% unless session[:cart].empty? %>
+<% unless session[:cart] %>
     nothing yet in your shopping cart.	
 <% end %>
