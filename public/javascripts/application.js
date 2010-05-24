@@ -1,6 +1,4 @@
 // Put your application scripts here
-$(document).ready(function() {
-        for (var i = 0; i < 4; i++) {
-           $('#product_'+i).draggable();
-        }
-});
+for (var i=0; i<3; i++) {
+    new Draggable('product_'+i, { revert: true });
+}
