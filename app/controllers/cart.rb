@@ -5,9 +5,9 @@ ShoppingCart.controllers :cart do
         render 'cart/index'
     end
 
-    get :add, :map => '/add', :provides => 'js' do
+    get :add, :map => '/add' do
         product_id = params[:id][-1].to_i
-        cart = session[:cart]
+        cart = session[:cart] || []
         unless cart[product_id]
             cart[product_id] = 1
         else
