@@ -10,6 +10,6 @@
     </div>
 <% end %>
 
-<% unless session[:cart] %>
+<% if session[:cart].blank? %>
     nothing yet in your shopping cart.	
 <% end %>

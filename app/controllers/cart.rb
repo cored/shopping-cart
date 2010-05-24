@@ -1,7 +1,10 @@
 ShoppingCart.controllers :cart do
+    before do
+        @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
+    end
+
     get :index, :map => '/' do
         session[:cart] = {}
-        @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
         render 'cart/index'
     end
 
