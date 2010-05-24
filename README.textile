@@ -1,0 +1,191 @@
+h1. Overview
+
+This tutorial will show you step-by-step how to create an Ajax-powered Padrino application in minutes.
+
+h1. Introduction
+
+Adding items to a shopping cart in common e-commerce applications isn't very close to the actual "add to cart" metaphor, since it requires clicking an "add to cart" button, watch a new page (the shopping cart), and then go back to the shop or checkout with buttons.
+
+Ajax allows to get closer to the cart metaphor, by enabling drag-and-drop interactions and giving immediate visual feedback, without leaving the shop.
+
+The target application of this tutorial will be a Padrino ported version of the shopping cart demo published by script.aculo.us in Rails. It uses the prototype JavaScript framework (bundled with Padrino) and some script.aculo.us JavaScript that is the core of the JavaScript helpers.
+
+h1. Application Setup
+
+First, create a shopping-cart project and cart controller:
+
+<pre><code>
+$ cd /home/cored
+$ padrino-gen project shopping-cart -e erb -s prototype
+$ cd shopping-cart
+$ bundle install
+$ padrino-gen controller Cart get:index
+</code></pre>
+
+h1. The Main Page
+
+First, you need to create a list of items to be purchased. To keep the project simple, the element list is accessed via an array. The shopping cart is a simple parameter of the session hash. Modify the shopping-cart/app/controllers/cart.rb to:
+
+<pre><code>
+ShoppingCart.controllers :cart do
+  get :index, :map => '/' do
+  	session[:cart] = []
+  	@products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
+  	render 'cart/index'
+  end
+end
+</code></pre>
+
+The main page of the cart controller will contain a list of items, and a zone to drag items to. This zone is the shopping cart. So create the view for the index in shoppng-cart/app/views/cart/index.erb  and write in:
+
+<pre><code>
+<h1>padrino Apple store demo</h1>
+ 
+<div id="shopping_cart">
+ 
+  <h2>Products:</h2>
+ 
+  <div id="product_list">
+    <% @products.each_with_index do |product, index| %>
+      <%= image_tag "product#{index}.png", :class => 'products', :id => "product_#{index}" %>
+    <% end %>
+  </div>
+ 
+  <h2>Cart:</h2>
+ 
+  <div id="cart" class="cart">
+    <div style="clear: both"></div>
+  </div>
+  
+</div>
+</code></pre>
+
+You can see that products are shown as images. Use the images available in the public/images directory in the project's repository, and put them in the shopping-cart/public/images/ directory. In addition, part of the styling was done for you, so it is recommended that you upload this stylesheet to the shopping-cart/public/stylesheets/ directory and add a stylesheet_link_tag in the top of the shopping-cart/app/views/cart/index.erb view:
+
+<pre><code>
+<%= stylesheet_link_tag 'cart' %>
+</code></pre>
+
+Now from your project root directory start padrino web server and point your browser to http://localhost:3000
+
+<pre><code>
+$ padrino start 
+</code></pre>
+
+h1. Focus on the Cart
+
+The cart content will change as you drag items to it. This means that the content of the cart in the template must be in an independent file. Use the partial helper for that. The items in the shopping cart will be stored in divs with float:left style, so a clearing div is necessary after the container. So change the end of the index.erb view to:
+
+<pre><code>
+  <div id="cart" class="cart">
+    <div id="items">
+      <% partial 'cart/cart', :collection => @products %>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+</div>
+</code></pre>
+
+The partial helper will include a _cart.erb  file, and look for this file in the shopping-cart/app/views/cart/ directory. Create it with the following content:
+
+<pre><code>
+<% session[:cart].each_with_index do |product, quantity| %>
+	<div>
+		<% 1.upto(quantity) do |i| %>
+			<%= image_tag "product#{quantity}.png", :class => 'cart-items', 
+			:id => "item_#{quantity}_#{i}",
+			:style => 'position:relative' 
+			%>
+		<% end %>
+		<%= "#{quantity} #{@products[quantity]} "%>
+	</div>
+	<div id="shopping_cart_text"></div>
+<% end %>
+
+<% if session[:cart].empty? %>
+nothing yet in your shopping cart.	
+<% end %>
+</code></pre>
+
+If the cart contains items, they appear as images, as many times as they are added; the quantity is be displayed after each series.
+
+Now watch again the shopping cart at:
+
+bq. http://localhost:3000
+
+Well, there is not much change, it is still very empty... It's time to make things AJAX.
+
+h1. Add JavaScript Behaviors
+
+Edit the index.erb view and add the following lines to the bottom:
+
+<pre><code>
+<%= javascript_include_tag 'protopak' %>
+<%= javascript_include_tag 'application' %>
+</code></pre>
+
+Make the images draggable by adding the following code to shopping-cart/public/javascript/application.js script:
+
+<pre><code>
+for (i = 0; i < 4; i++) {
+	new Draggable('product_'+i, { revert: true });
+}
+</code></pre>
+
+This adds a 'draggable' behavior to each of the images of the list of products. The revert option will make images go back to their origin position when released (unless received by a receiving element).
+
+Now, define the cart as a receiving element. You just need to define which part of the view will have to be updated when the event occurs, which action will be called for its content, and which type of draggable elements can be dragged into it. Put the following code inside the application.js script:
+
+<pre><code>
+Droppables.add('cart', {
+    accept: 'products',
+    onDrop: function(element) {
+        new Ajax.Updater('items', $('shopping_cart').readAttribute('data-url'), { method: 'get', parameters: { id: element.id }});
+    }
+});
+</code></pre>
+
+Now try again, and move the products to the cart: it works. When a draggable item is dragged to the receiving element, an XMLHTTPRequest is sent to the add action, and the result is displayed in the items div. The thing is, the add action of the cart module is not defined yet...
+
+h1. Define the Updating Action
+
+Edit the shopping-cart/app/controllers/cart.rb to add an add action:
+
+<pre><code>
+   get :add, :map => '/add' do
+    product_id = params[:id][-1].to_i
+    cart = session[:cart] || {}
+    cart[product_id] ? cart[product_id] += 1 : cart[product_id] = 1
+    session[:cart] = cart
+    @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
+    render 'cart/add'
+   end
+</code></pre>
+
+This action looks for the parameter sent by the JavaScript (the id of the dragged item) and adds it to the cart.
+
+The result of the add action will be the add.erb view. It is a simple inclusion of the _cart.erb partial, but this time it is necessary to pass the products as a parameter :
+
+<pre><code>
+#shopping-cart/app/views/add.erb
+
+<% partial 'cart/cart', :collection => @products %>
+</code></pre>
+
+Try it on: you can now add items to the cart by dragging them
+
+h1. Focus on Usability
+
+You could stop now, but this shopping cart has a big default: while the cart is updated, the interface doesn't change and the user might be disoriented. This is a general issue of asynchronous requests: an indicator zone has to be added to show that the request is being processed. In addition, nothing tells the user when the dragged item is considered accepted by the cart, so the hover style of the cart div also has to be defined.
+
+To do that, edit the index.erb template and write in:
+
+<pre><code>
+<div style="height:20px">
+  <p id="indicator" style="display:none">
+    <%= image_tag 'indicator.gif' %> updating cart...
+  </p>
+</div>
+</code></pre>
+
+Save the 'indicator.gif' image file to your shopping-cart/public/images/ directory. You can find this file in the github repo.
