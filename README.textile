@@ -153,12 +153,11 @@ Edit the shopping-cart/app/controllers/cart.rb to add an add action:
 
 <pre><code>
    get :add, :map => '/add' do
-    product_id = params[:id][-1].to_i
-    cart = session[:cart] || {}
-    cart[product_id] ? cart[product_id] += 1 : cart[product_id] = 1
-    session[:cart] = cart
-    @products = ['iPod black', 'iMac', 'iMac RC', 'iPod']
-    render 'cart/add'
+     product_id = params[:id].at(-1).to_i
+     cart = session[:cart] || {}
+     cart[product_id] ? cart[product_id] += 1 : cart[product_id] = 1
+     session[:cart] = cart
+     render 'cart/add'
    end
 </code></pre>
 

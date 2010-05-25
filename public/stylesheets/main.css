@@ -1,0 +1,167 @@
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input
+{ margin: 0; padding: 0; }
+a img,:link img,:visited img { border: none; }
+
+a:link, a:visited
+{
+  text-decoration: none;
+  color:#6E3291;
+}
+
+a:hover
+{
+  text-decoration: underline;
+}
+
+body, td
+{
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  background-color: #fff;
+}
+
+body
+{
+  text-align: center;
+}
+
+div#header
+{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  width: 780px;
+  height: 46px;
+}
+
+div#header ul, div#footer ul
+{
+  list-style: none;
+  display:inline;
+  float:right;
+}
+
+div#header li, div#footer li, div#header form
+{
+  display: inline;
+  list-style: none;
+}
+
+div#header li
+{
+  padding: 0 7px;
+  font-weight: bold;
+  border-right: solid 1px #0066CC;
+}
+
+div#header li.last
+{
+  border-right: none;
+}
+
+div#header .last input
+{
+  border: solid 1px gray;
+  width:70px;
+  background-color: #F4F4F4;
+  vertical-align:sub;
+  margin-top:7px;
+}
+
+div#header .last input:focus, div#header .last input:hover
+{
+  background-color: white;
+}
+
+div#header li :link, div#header li :visited
+{
+  color:#0066CC;
+}
+
+div#content_main
+{
+  background-color:white;
+}
+
+div#content_main h1
+{
+  padding: 5px;
+  font-size:14px;
+  margin-bottom:10px;
+  color: #B59D7A;
+  border-bottom: 1px solid #B59D7A;
+}
+
+div#content_main h2
+{
+  font-size:14px;
+}
+
+div#content_main .interested_block
+{
+  float:left;
+  padding:4px 10px 10px 0;
+  width:60px;
+}
+
+div#content_main .interested_mark
+{
+  font-size: 2em; 
+  font-weight: bold; 
+  width: 30px; 
+  height: 30px; 
+  background-color: #FFE56F; 
+  border: 1px solid #ddd; 
+  text-align: center;
+  margin-left:10px;
+}
+
+div#content_main .question_body
+{
+  margin-top:6px;
+}
+
+div#content_main hr
+{
+  background-color:white;
+  border:none;
+  border-top:solid 1px #B59D7A;
+  clear:both;
+  margin-bottom:10px;
+}
+
+div#footer
+{
+  padding-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  width: 780px;
+  background-color: #bbb;
+}
+
+/* Form error */ 
+.error 
+{
+  color: #d8732f;
+}
+
+/* Progress indicator */
+div#indicator 
+{
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  left: 10px;
+  top: 10px;
+  z-index: 900;
+  background: url(/images/indicator.gif) no-repeat 0 0; 
+}
+
+/* Pager */
+.pager li {
+  list-style: none;
+  display: inline;
+}
