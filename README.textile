@@ -188,3 +188,30 @@ To do that, edit the index.erb template and write in:
 </code></pre>
 
 Save the 'indicator.gif' image file to your shopping-cart/public/images/ directory. You can find this file in the github repo.
+
+Now, modify the Javascript in shopping-cart/public/javascript/application.js to show this new indicator while requests are processed and declare the hover style:
+
+<pre><code>
+Ajax.Responders.register({
+    onCreate: function() {
+        if($('indicator') && Ajax.activeRequestCount>0)
+            Element.show('indicator');
+    },
+    onComplete: function() {
+        if($('indicator') && Ajax.activeRequestCount==0)
+            Element.hide('indicator');
+    }
+});
+
+Droppables.add('cart', {
+    accept: 'products',
+    onDrop: function(element) {
+        new Ajax.Updater('items', $('shopping_cart').readAttribute('data-url'), { method: 'get', parameters: { id: element.id }});
+    }, 
+    hoverclass: "cart-active"
+});
+</code></pre>
+
+h1. Conclusion
+
+I hope you enjoy the ride through some of the features of the Padrino web framework. Any suggestion just send me an email to george.rafael at gmail.com
