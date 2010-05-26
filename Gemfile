@@ -7,7 +7,7 @@ gem 'thin' # or mongrel
 
 # Component requirements
 gem 'activerecord', :require => "active_record"
-gem 'mysql', :require => "mysql"
+gem 'sqlite3-ruby', :require => "sqlite3"
 
 # Test requirements
 gem 'rspec', :require => "spec", :group => "test"
