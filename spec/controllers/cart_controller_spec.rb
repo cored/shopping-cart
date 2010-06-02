@@ -1,11 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper.rb')
 
 describe "CartController" do
-  before do
+  it "should return the cart index view" do
     get "/"
+    last_response.body.should == "<link href=\"/stylesheets/main.css?1274795722\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\r\n<link href=\"/stylesheets/cart.css?1274795722\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\r\n<h1>Padrino web framework Apple store demo</h1>\r\n\r\n<div style=\"height:20px\">\r\n    <p id=\"indicator\" style=\"display:none\">\r\n        <img src=\"/images/indicator.gif?1130944168\" /> updating cart...\r\n    </p>\r\n</div>\r\n\r\n<p>This page demonstrates Ajax support in <a href=\"http://www.padrinorb.com/\">Padrino web framework</a>.\r\n    Original idea from <a href=\"http://script.aculo.us/demos/shop\">script.aculo.us</a>.\r\n    Documentation idea from <a href=\"http://symfony-project.org\">symfony</a>.\r\n</p> \r\n\r\n<p>Drag products to the cart to fill it:</p>\r\n\r\n<div id=\"shopping_cart\" data-url=\"/add?format=js\">\r\n\r\n    <div id=\"product_list\">\r\n        \r\n            <img src=\"/images/product0.png?1274733641\" class=\"products\" id=\"product_0\" />\r\n        \r\n            <img src=\"/images/product1.png?1274733641\" class=\"products\" id=\"product_1\" />\r\n        \r\n            <img src=\"/images/product2.png?1274733641\" class=\"products\" id=\"product_2\" />\r\n        \r\n            <img src=\"/images/product3.png?1274733641\" class=\"products\" id=\"product_3\" />\r\n        \r\n    </div>\r\n\r\n    <h2>Cart:</h2>\r\n\r\n    <div id=\"cart\" class=\"cart\">\r\n        <div id=\"items\">\r\n            \r\n\r\n\r\n    nothing yet in your shopping cart.\t\r\n\r\n\r\n        </div>\r\n        <div style=\"clear: both\"></div>\r\n    </div>\r\n\r\n</div>\r\n\r\n<script src=\"/javascripts/protopak.js?1274733641\" type=\"text/javascript\"></script>\n<script src=\"/javascripts/application.js?1274795144\" type=\"text/javascript\"></script> \r\n"
   end
 
-  it "returns hello world" do
-    last_response.body.should == "Hello World"
-  end
-end
+end 
